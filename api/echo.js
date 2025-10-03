@@ -35,9 +35,21 @@ export default async function handler(req) {
     'set-cookie',
     'x-api-key',
     'x-auth-token',
+    'x-vercel-oidc-token',
+    'forwarded',
+    'x-vercel-proxied-for',
+    'x-vercel-deployment-url',
+    'x-vercel-id',
+    'x-vercel-function-path',
+    'logs-url',
+    'ja4-digest',
   ]);
+  const redactPrefixes = ['x-vercel-ip-'];
   for (const k of Object.keys(headers)) {
-    if (redact.has(k)) headers[k] = '[redacted]';
+    const lower = k.toLowerCase();
+    if (redact.has(lower) || redactPrefixes.some(prefix => lower.startsWith(prefix))) {
+      headers[k] = '[redacted]';
+    }
   }
   delete headers['x-forwarded-for'];
   delete headers['x-real-ip'];
