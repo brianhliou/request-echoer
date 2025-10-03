@@ -28,31 +28,44 @@ function summarizeText(text) {
 export default async function handler(req) {
   const url = new URL(req.url);
   const headers = Object.fromEntries(req.headers.entries());
-  const redact = new Set([
+  const REDACT = new Set([
     'authorization',
     'proxy-authorization',
     'cookie',
     'set-cookie',
     'x-api-key',
     'x-auth-token',
-    'x-vercel-oidc-token',
+  ]);
+  const REMOVE = new Set([
     'forwarded',
+    'x-forwarded-for',
+    'x-forwarded-host',
+    'x-forwarded-proto',
     'x-vercel-proxied-for',
+    'x-vercel-oidc-token',
+    'x-real-ip',
+    'logs-url',
     'x-vercel-deployment-url',
     'x-vercel-id',
     'x-vercel-function-path',
-    'logs-url',
-    'ja4-digest',
+    'x-vercel-ip-as-number',
+    'x-vercel-ip-city',
+    'x-vercel-ip-continent',
+    'x-vercel-ip-country',
+    'x-vercel-ip-country-region',
+    'x-vercel-ip-latitude',
+    'x-vercel-ip-longitude',
+    'x-vercel-ip-postal-code',
+    'x-vercel-ip-timezone',
+    'x-vercel-ja4-digest',
+    'sentry-trace',
+    'baggage',
   ]);
-  const redactPrefixes = ['x-vercel-ip-'];
   for (const k of Object.keys(headers)) {
-    const lower = k.toLowerCase();
-    if (redact.has(lower) || redactPrefixes.some(prefix => lower.startsWith(prefix))) {
-      headers[k] = '[redacted]';
-    }
+    const key = k.toLowerCase();
+    if (REMOVE.has(key)) delete headers[k];
+    else if (REDACT.has(key)) headers[k] = '[redacted]';
   }
-  delete headers['x-forwarded-for'];
-  delete headers['x-real-ip'];
   const origin = req.headers.get('origin') || '';
   const corsHeaders = ALLOWED_ORIGINS.has(origin)
     ? { 'Access-Control-Allow-Origin': origin, Vary: 'Origin' }
