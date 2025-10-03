@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+  <meta charset="utf-8" />
+  <title>Request Echoer</title>
+  <style>
+    body{font-family:system-ui;margin:24px;max-width:900px}
+    textarea, input, select, button{width:100%;margin:8px 0;padding:8px}
+    pre{background:#111;color:#eee;padding:16px;overflow:auto}
+  </style>
+  <h1>Request Echoer</h1>
+
+  <label>Method</label>
+  <select id="method">
+    <option>GET</option><option selected>POST</option>
+    <option>PUT</option><option>PATCH</option><option>DELETE</option>
+  </select>
+
+  <label>Query string (e.g. <code>a=1&b=2</code>)</label>
+  <input id="qs" placeholder="">
+
+  <label>Content-Type</label>
+  <input id="ct" value="application/json">
+
+  <label>Body</label>
+  <textarea id="body" rows="8">{ "hello": "world" }</textarea>
+
+  <button id="send">Send to /api/echo</button>
+  <h2>Response</h2>
+  <pre id="out">{}</pre>
+
+  <script type="module" src="/main.js"></script>
+</html>
