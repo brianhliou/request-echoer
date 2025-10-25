@@ -5,6 +5,31 @@ function buildUrl(base, qs) {
   return normalized ? `${base}?${normalized}` : base;
 }
 
+// Modal functionality
+const modal = $('modal');
+const modalClose = $('modal-close');
+const howItWorksBtn = $('how-it-works-btn');
+
+function openModal() {
+  modal.style.display = 'block';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  modal.style.display = 'none';
+  document.body.style.overflow = 'unset';
+}
+
+howItWorksBtn.addEventListener('click', openModal);
+modalClose.addEventListener('click', closeModal);
+modal.querySelector('.modal-backdrop').addEventListener('click', closeModal);
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && modal.style.display === 'block') {
+    closeModal();
+  }
+});
+
 document.getElementById('send').addEventListener('click', async () => {
   const method = $('method').value;
   const qs = $('qs').value;

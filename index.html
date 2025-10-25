@@ -3,11 +3,55 @@
   <meta charset="utf-8" />
   <title>Request Echoer</title>
   <style>
-    body{font-family:system-ui;margin:24px;max-width:900px}
+    body{font-family:system-ui;margin:0;padding:0}
+
+    /* Header Styles */
+    #header{position:sticky;top:0;z-index:50;background:white;border-bottom:1px solid #e2e8f0;box-shadow:0 1px 3px rgba(0,0,0,0.1)}
+    .header-container{max-width:1280px;margin:0 auto;padding:0 1rem;display:flex;align-items:center;justify-content:space-between;height:4rem}
+    .header-title{margin:0;font-size:1.5rem;font-weight:700;color:#1a202c}
+    .header-nav{display:flex;align-items:center;gap:1.5rem}
+    .header-nav a{font-size:0.875rem;font-weight:500;color:#4a5568;text-decoration:none;transition:color 0.2s}
+    .header-nav a:hover{color:#1a202c}
+    .header-how-it-works-btn{padding:0.5rem 1rem;font-size:0.875rem;font-weight:500;color:#3182ce;background:white;border:1px solid #3182ce;border-radius:0.375rem;cursor:pointer;transition:all 0.2s}
+    .header-how-it-works-btn:hover{background:#ebf8ff}
+    @media (max-width:640px){
+      .header-title{font-size:1.25rem}
+      .header-nav{gap:0.75rem}
+    }
+
+    /* Modal Styles */
+    .modal{display:none;position:fixed;inset:0;z-index:100;overflow-y:auto}
+    .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.3);backdrop-filter:blur(4px)}
+    .modal-content{position:relative;margin:4rem auto;max-width:42rem;width:calc(100% - 2rem);background:white;border-radius:0.5rem;box-shadow:0 1.25rem 2.5rem rgba(0,0,0,0.3)}
+    .modal-header{display:flex;align-items:center;justify-content:space-between;padding:1.5rem;border-bottom:1px solid #e2e8f0}
+    .modal-header h2{margin:0;font-size:1.5rem;font-weight:700;color:#1a202c}
+    .modal-close{background:none;border:none;font-size:2rem;line-height:1;color:#a0aec0;cursor:pointer;padding:0;width:2rem;height:2rem;display:flex;align-items:center;justify-content:center;transition:color 0.2s}
+    .modal-close:hover{color:#4a5568}
+    .modal-body{padding:1.5rem;color:#4a5568}
+    .modal-body h3{font-size:1.125rem;font-weight:600;color:#1a202c;margin-top:1.5rem;margin-bottom:0.75rem}
+    .modal-body h3:first-child{margin-top:0}
+    .modal-body ul{margin:0.5rem 0;padding-left:1.5rem}
+    .modal-body li{margin:0.5rem 0}
+
+    /* Content Styles */
+    .content{max-width:900px;margin:0 auto;padding:24px}
     textarea, input, select, button{width:100%;margin:8px 0;padding:8px}
     pre{background:#111;color:#eee;padding:16px;overflow:auto}
   </style>
-  <h1>Request Echoer</h1>
+
+  <header id="header">
+    <div class="header-container">
+      <h1 class="header-title">Request Echoer</h1>
+      <nav class="header-nav">
+        <button id="how-it-works-btn" class="header-how-it-works-btn">? How it Works</button>
+        <a href="https://brianhliou.github.io/" target="_blank" rel="noopener noreferrer">Brian Liou</a>
+        <a href="https://github.com/brianhliou" target="_blank" rel="noopener noreferrer">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="content">
+    <h2>Send Request</h2>
 
   <label>Method</label>
   <select id="method">
@@ -27,6 +71,28 @@
   <button id="send">Send to /api/echo</button>
   <h2>Response</h2>
   <pre id="out">{}</pre>
+  </div>
+
+  <div id="modal" class="modal">
+    <div class="modal-backdrop"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>How This Works</h2>
+        <button id="modal-close" class="modal-close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p>Request Echoer is a minimal HTTP debugging utility that echoes back request metadata.</p>
+        <h3>What It Does</h3>
+        <ul>
+          <li><strong>Echoes Requests:</strong> Sends your request to the server and displays the complete request metadata including headers, method, body, and query parameters.</li>
+          <li><strong>Test HTTP Methods:</strong> Try GET, POST, PUT, PATCH, or DELETE requests to see how they're processed.</li>
+          <li><strong>Debug APIs:</strong> Useful for testing how your application sends requests, inspecting headers, and validating request payloads.</li>
+        </ul>
+        <h3>Try It Out</h3>
+        <p>Configure your request using the form above, click "Send", and see the complete request details in the response.</p>
+      </div>
+    </div>
+  </div>
 
   <script type="module" src="/main.js"></script>
 </html>
